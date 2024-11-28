@@ -1,0 +1,33 @@
+.header {
+    background-color: lightgray;
+}
+
+.highlight {
+    background-color: pink;
+}
+
+.actions {
+    padding: 10px;
+    background-color: lightslategray;
+
+    text-align: center;
+}
+
+.modal {
+    display: none;
+
+    width: 400px;
+    padding: 20px;
+    margin: 50px auto;
+
+    background-color: steelblue;
+    text-align: center;
+}
+
+.modal h2 span {
+    margin-left: 90px;
+}
+
+.time {
+    font-family: monospace;
+}

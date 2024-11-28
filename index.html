@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/hello-dom.css">
+        <title>hello-dom</title>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Hello DOM</h1>
+            <h2>Nice to meet you :)</h2>
+        </div>
+        
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing <span>elit</span>. Doloremque ullam corporis blanditiis quam ducimus similique officia nulla officiis <span>repellendus</span> qui rerum, reiciendis numquam possimus voluptate hic assumenda sed alias enim. Quis, autem <span>excepturi</span>! Nobis <span>cumque</span> commodi laboriosam exercitationem minima autem natus tempore molestiae. Incidunt <span>doloribus</span> alias et ab? Eligendi dolorum saepe itaque excepturi non quaerat amet <span>ducimus</span> quam, sed modi dolor libero <span>quibusdam</span> dignissimos. Dignissimos non quisquam <span>distinctio</span> quo corrupti debitis deserunt dolor! Quam debitis impedit quis quibusdam fugiat nobis rem deleniti eos nesciunt placeat ad exercitationem unde, nisi dolorum non quae quo. Voluptatibus harum explicabo quam laudantium quasi odit?</p>
+        
+        <div class="actions">
+            <button onclick="toggleSpans()">Toggle Spans</button>
+            <button onclick="toggleColors()">Toggle Colors</button>
+            <button onclick="showModal()">Show Modal</button>
+            <button onclick="shiftText()">Shift Text</button>
+            <button onclick="resetText()">Reset Text</button>
+            <button onclick="addTimeout()">Add Timeout <span>(0)</span></button>
+        </div>
+
+        <div class="modal">
+            <h2>Time since last reload <span>&#10005</span></h2>
+            <p class="time">
+                <span class="minutes"></span>
+                <span class="seconds"></span>
+            </p>
+        </div>
+
+        <script src="js/hello-dom.js"></script>
+    </body>
+</html>
