@@ -6,6 +6,8 @@ var gHeaderColorIntervalID = null
 var gModalrefreshIntervalID = null
 var gTimeoutCounter = 0;
 var gOriginalPadding = 0
+var gSecondsSinceModalIsOpen = 0
+var gHeaderBackgroundColor = null
 window.addEventListener("load", () => init())
 
 var isSpanHighLight = false
@@ -14,7 +16,6 @@ function init() {
   // TODO: start an interval which updates gTimer
   // every 100ms. It will hold the number of ms
   // since the page was loaded.
-  // ? should try with now() - now() and compare with counter += 100
   gHeaderIntervalID = setInterval(updateInitTimer, 100)
   
   // TODO: 2 seconds after the page loads, change the
@@ -23,15 +24,16 @@ function init() {
   //alternative1
   setTimeout(uodateH1Text, 2000, "alternative 1")
 
-  var elements = document.querySelectorAll("p span")
-  var clssList = []
-  for (var i = 0; i < elements.length; i++){
-    clssList = [...elements[i].classList]
-    if (clssList.includes("highlight")) {
-      isSpanHighLight = true
-      break
-    }
-  }
+  // assuming all spans share the same highlighted state
+  // var elements = document.querySelectorAll("p span")
+  // var clssList = []
+  // for (var i = 0; i < elements.length; i++){
+  //   clssList = [...elements[i].classList]
+  //   if (clssList.includes("highlight")) {
+  //     isSpanHighLight = true
+  //     break
+  //   }
+  // }
 
   // save header original left padding
   const headerElement = document.querySelector(".header h1")
@@ -99,10 +101,18 @@ function toggleColors() {
   // background color to a ramdom color every second.
   if (gHeaderColorIntervalID == null) {
     gHeaderColorIntervalID = setInterval(setHeaderColor, 1000)
+    // save original backgraound color
+    var el = document.querySelector(".header")
+    gHeaderBackgroundColor = window.getComputedStyle(el).backgroundColor
   }
   else {
     clearInterval(gHeaderColorIntervalID)
     gHeaderColorIntervalID = null
+    // restore original background color
+    var elements = Array.from(document.querySelectorAll(".header"))
+    for (var i=0; i<elements.length; i++){
+      elements[i].style = "background-color: " + gHeaderBackgroundColor
+    }
   }
 }
 
@@ -122,25 +132,40 @@ function showModal() {
   
   // TODO: when the modal is displayed, update the
   // time display every second.
+  gSecondsSinceModalIsOpen = 0
   gModalrefreshIntervalID = setInterval(refreshModal, 1000)
   
   // TODO: when the <span></span> element inside the
   // modal's <h2></h2> is clicked, close the modal
-  var spans = Array.from(document.querySelectorAll(".modal span"))
-  for (var i=0; i<spans.length; i++){
-    spans[i].addEventListener('click', () => el.style.display = "none" )
-  }
+  var closeSpan = document.querySelector(".modal h2 span")
+  closeSpan.addEventListener('click', () => el.style.display = "none" )
 
+  // try to see the counter starting from 0 other than modal first call
+  console.log(`gSecondsSinceModalIsOpen = ${gSecondsSinceModalIsOpen}`)
+  var timeSpans = Array.from(document.querySelectorAll(".modal time span"))
+  for (var i=0; i< timeSpans.length; i++){
+    timeSpans[i].innerText = gSecondsSinceModalIsOpen
+  }
+  //try to force the model to re-render
+  var modalEl = document.querySelector(".modal")
+  modalEl.classList.add('tempClass')
+  setTimeout(() => modalEl.classList.remove('tempClass'), 0)
   
   // TODO: make the modal auto-close after 5 seconds
   // using setTimeout()
-  setTimeout(() => el.style.display = "none", 5000)
+  setTimeout(() => {el.style.display = "none"; 
+                    clearInterval(gModalrefreshIntervalID); 
+                    gSecondsSinceModalIsOpen = 0}, 5000)
 }
 
 function refreshModal(){
-  const element = document.querySelector('.modal')
-  element.classList.add('tempClass')
-  setTimeout(() => element.classList.remove('tempClass'), 0)
+  const minutes = document.querySelector('.minutes')
+  const seconds = document.querySelector('.seconds')
+  gSecondsSinceModalIsOpen++
+  seconds.innerText = gSecondsSinceModalIsOpen % 60
+  if (gSecondsSinceModalIsOpen >= 60) minutes.innerText = Math.floor(gSecondsSinceModalIsOpen / 60)
+  // element.classList.add('tempClass')
+  // setTimeout(() => element.classList.remove('tempClass'), 0)
 }
 
 function shiftText() {
@@ -148,9 +173,8 @@ function shiftText() {
   // left side each time the function runs
   var headerElements = Array.from(document.querySelectorAll(".header h1, .header h2"))
   for (var i=0; i< headerElements.length; i++){
-    const computedStyle = window.getComputedStyle(headerElements[i])
-    var leftPadding = computedStyle.paddingLeft
-    leftPadding = parseInt(computedStyle.paddingLeft) + 10
+    var leftPadding = window.getComputedStyle(headerElements[i]).paddingLeft
+    leftPadding = parseInt(leftPadding) + 10
     headerElements[i].style.paddingLeft = leftPadding + 'px'
   }
 }
