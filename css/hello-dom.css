@@ -14,8 +14,6 @@
 }
 
 .modal {
-    display: none;
-
     width: 400px;
     padding: 20px;
     margin: 50px auto;
@@ -30,4 +28,8 @@
 
 .time {
     font-family: monospace;
+}
+
+.hidden {
+    display: none;
 }

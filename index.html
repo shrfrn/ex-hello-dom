@@ -24,11 +24,11 @@
             <button onclick="addTimeout()">Add Timeout <span>(0)</span></button>
         </div>
 
-        <div class="modal">
-            <h2>Time since last reload <span>&#10005</span></h2>
+        <div class="modal hidden">
+            <h2>Time since last reload <span onclick="onCloseModal()">&#10005</span></h2>
             <p class="time">
-                <span class="minutes"></span>
-                <span class="seconds"></span>
+                <span class="minutes">00</span> :
+                <span class="seconds">00</span>
             </p>
         </div>
 
